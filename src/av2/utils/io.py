@@ -56,21 +56,22 @@ def read_lidar_sweep(fpath: Path, attrib_spec: str = "xyz") -> NDArrayFloat:
             y -> point y-coord
             z -> point z-coord
 
-        The following attributes are not loaded:
+        The following attributes can not be loaded with this function (use read_feather() with desired columns):
             intensity -> point intensity/reflectance
             laser_number -> laser number of laser from which point was returned
             offset_ns -> nanosecond timestamp offset per point, from sweep timestamp.
+            
 
     Returns:
         Array of shape (N, C). If attrib_str is invalid, `None` will be returned
 
     Raises:
-        ValueError: If any element of `attrib_spec` is not in (x, y, z, intensity, laser_number, offset_ns).
+        ValueError: If any element of `attrib_spec` is not in (x, y, z).
     """
     possible_attributes = ["x", "y", "z"]
     if not all([a in possible_attributes for a in attrib_spec]):
         raise ValueError(
-            "Attributes must be in (x, y, z, intensity, laser_number, offset_ns)."
+            "Attributes must be in (x, y, z)."
         )
 
     sweep_df = read_feather(fpath)
